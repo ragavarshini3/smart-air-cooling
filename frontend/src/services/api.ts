@@ -9,7 +9,18 @@ import {
   AIChatMessage 
 } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+const getApiBaseUrl = () => {
+  if (import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL.startsWith('http')) {
+    return import.meta.env.VITE_API_URL;
+  }
+  // Production fallback on Render
+  if (typeof window !== 'undefined' && window.location.hostname.includes('onrender.com')) {
+    return 'https://smart-cooling-backend.onrender.com/api';
+  }
+  return '/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
