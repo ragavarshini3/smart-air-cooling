@@ -61,6 +61,7 @@ export interface AnalyticsSummary {
   max_fan_speed: number;
   auto_activations_count: number;
   time_filter: string;
+  history?: Array<{ timestamp: string; temperature: number; humidity: number }>;
 }
 
 export interface AIChatMessage {
