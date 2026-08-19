@@ -9,7 +9,7 @@ import {
   AIChatMessage 
 } from '../types';
 
-const API_BASE_URL = '/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
@@ -48,8 +48,9 @@ export const setSystemMode = async (mode: 'AUTO' | 'MANUAL'): Promise<FanState> 
   return response.data;
 };
 
-export const getAlerts = async (): Promise<Alert[]> => {
-  const response = await api.get<Alert[]>('/alerts');
+export const getAlerts = async (resolved?: boolean): Promise<Alert[]> => {
+  const url = resolved !== undefined ? `/alerts?resolved=${resolved}` : '/alerts';
+  const response = await api.get<Alert[]>(url);
   return response.data;
 };
 
