@@ -10,14 +10,23 @@ import {
 } from '../types';
 
 const getApiBaseUrl = () => {
+  let url = '';
   if (import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL.startsWith('http')) {
-    return import.meta.env.VITE_API_URL;
+    url = import.meta.env.VITE_API_URL;
+  } else if (typeof window !== 'undefined' && window.location.hostname.includes('onrender.com')) {
+    url = 'https://smart-cooling-backend.onrender.com/api';
+  } else {
+    url = '/api';
   }
-  // Production fallback on Render
-  if (typeof window !== 'undefined' && window.location.hostname.includes('onrender.com')) {
-    return 'https://smart-cooling-backend.onrender.com/api';
+
+  // Ensure /api suffix for http URLs
+  if (url.startsWith('http')) {
+    url = url.replace(/\/+$/, '');
+    if (!url.endsWith('/api')) {
+      url = `${url}/api`;
+    }
   }
-  return '/api';
+  return url;
 };
 
 export const API_BASE_URL = getApiBaseUrl();
