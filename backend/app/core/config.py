@@ -1,8 +1,8 @@
 import os
 import json
 from pydantic import field_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
-from typing import List, Union, Any
+from pydantic_settings import BaseSettings
+from typing import List, Union
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Smart Air-Cooling System API"
@@ -17,11 +17,13 @@ class Settings(BaseSettings):
     
     # Security & CORS
     SECRET_KEY: str = os.getenv("SECRET_KEY", "smart_cooling_secret_key_2026")
-    CORS_ORIGINS: Any = [
+    CORS_ORIGINS: Union[List[str], str] = [
         "http://localhost:5173",
         "http://localhost:3000",
         "http://127.0.0.1:5173",
         "http://127.0.0.1:3000",
+        "https://smart-cooling-frontend.onrender.com",
+        "*"
     ]
 
     @field_validator("CORS_ORIGINS", mode="before")
@@ -29,7 +31,9 @@ class Settings(BaseSettings):
     def assemble_cors_origins(cls, v: Union[str, List[str]]) -> List[str]:
         if isinstance(v, str):
             if not v.strip():
-                return []
+                return ["*"]
+            if v == "*":
+                return ["*"]
             if v.startswith("[") and v.endswith("]"):
                 try:
                     return json.loads(v)
@@ -38,12 +42,11 @@ class Settings(BaseSettings):
             return [i.strip() for i in v.split(",") if i.strip()]
         elif isinstance(v, list):
             return v
-        return []
+        return ["*"]
 
-    model_config = SettingsConfigDict(
-        case_sensitive=True,
-        env_file=".env",
-        extra="allow"
-    )
+    class Config:
+        case_sensitive = True
+        env_file = ".env"
+        extra = "allow"
 
 settings = Settings()

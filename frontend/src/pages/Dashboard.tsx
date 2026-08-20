@@ -13,6 +13,7 @@ import { MetricCard } from '../components/dashboard/MetricCard';
 import { StatusBadge } from '../components/dashboard/StatusBadge';
 import { LoadingSpinner } from '../components/common/LoadingSpinner';
 import { DashboardData } from '../types';
+import { API_BASE_URL } from '../services/api';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 
 interface DashboardProps {
@@ -34,8 +35,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ data, loading, error }) =>
           <h3 className="font-bold text-xl">Unable to connect to backend server</h3>
         </div>
         <p className="text-base text-slate-200">{error}</p>
-        <p className="text-sm text-slate-400 mt-2">
-          Ensure FastAPI backend is running on <code className="bg-slate-800 px-2 py-1 rounded font-mono">http://localhost:8000</code>.
+        <p className="text-sm text-slate-400 mt-2 font-mono">
+          Target API Endpoint: <span className="text-sky-300 bg-slate-900 px-2 py-1 rounded">{API_BASE_URL}</span>
         </p>
       </div>
     );
@@ -169,7 +170,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ data, loading, error }) =>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
                 <XAxis 
                   dataKey="timestamp" 
-                  tickFormatter={(ts) => new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                  tickFormatter={(ts) => new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   stroke="#64748b" 
                   fontSize={11} 
                 />
@@ -208,7 +209,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ data, loading, error }) =>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
                 <XAxis 
                   dataKey="timestamp" 
-                  tickFormatter={(ts) => new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                  tickFormatter={(ts) => new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   stroke="#64748b" 
                   fontSize={11} 
                 />
