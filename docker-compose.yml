@@ -6,7 +6,7 @@ services:
     container_name: smart_cooling_db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password 
       MYSQL_DATABASE: smart_cooling
       MYSQL_USER: cooling_user
       MYSQL_PASSWORD: cooling_password
