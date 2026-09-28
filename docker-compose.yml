@@ -11,7 +11,7 @@ services:
       MYSQL_USER: cooling_user
       MYSQL_PASSWORD: cooling_password
     ports:
-      - "3306:3306"
+      - "3306:3306" 
     volumes:
       - mysql_data:/var/lib/mysql
 
